@@ -24,9 +24,7 @@ const Total = (props) => {
  
 const Part = (props) => {
   return (
-
     <p>{props.name} {props.exercice}</p>
-
   )
 }
 
@@ -56,7 +54,6 @@ const App = () => {
       <Content course={course}/>
       <Total course={course}/>
   
-
     </div>
   )
 }
