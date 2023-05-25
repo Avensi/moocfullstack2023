@@ -8,34 +8,80 @@ const Header = (props) => {
 
 const Stats = (props) => {
   return (
-    <p>{props.feedbackName} {props.feedbackCount}</p>
+    <p>{props.name} {props.counter} {props.text}</p>
+  )
+}
+
+const Button = (props) => {
+  return(
+    <button onClick={props.handleClick}> {props.text} </button>
   )
 }
 
 const App = () => {
-  // save clicks of each button to its own state
+
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
+  const [total, setTotal] = useState(0)
+  const [feedCount, setFeedCount] = useState(0)
+  const [average, setAverage] = useState(0)
+  const [positive, setPositive] = useState(0)
 
-  const addGood = () => setGood(good + 1)
+  const addGood = () => {
+    const updatedGood = good + 1 
+    setGood(updatedGood)
+
+    const updatedFeedCount = feedCount + 1 
+    setFeedCount(updatedFeedCount)
+
+    setTotal(updatedGood + neutral + bad)
+    setAverage(updatedFeedCount/(updatedGood + neutral + bad))
+    setPositive(updatedGood / (updatedGood + neutral + bad) * 100)
+
+  }
+  const addNeutral = () => {
+    const updatedNeutral = neutral + 1 
+    setNeutral(updatedNeutral)
+    
+    const updatedFeedCount = feedCount + 0 
+    setFeedCount(updatedFeedCount)
+
+    setTotal(updatedNeutral + good + bad)
+
+    setAverage(updatedFeedCount/(updatedNeutral + good + bad))
+    setPositive((good / (updatedNeutral + good + bad)) * 100)
+  }
+  const addBad = () => {
+    const updatedBad = bad + 1 
+    setBad(updatedBad)
+    
+    const updatedFeedCount = feedCount - 1
+    setFeedCount(updatedFeedCount)
+
+    setTotal(updatedBad + neutral + good)
+    setAverage(updatedFeedCount/(updatedBad + neutral + good))
+    setPositive((good / (updatedBad + neutral + good)) * 100)
+  }
+
   
-  const addNeutral = () => setNeutral(neutral + 1)
-
-  const addBad = () => setBad(bad + 1)
 
 
   return (
     <div>
       <Header name={"give feedback"} />
-      <button onClick={addGood}>good</button>
-      <button onClick={addNeutral}>neutral</button>
-      <button onClick={addBad}>bad</button>
+      <Button handleClick={addGood} text="good"/>
+      <Button handleClick={addNeutral} text="neutral"/>
+      <Button handleClick={addBad} text="bad"/>
 
       <Header name={"statistics"} />
-      <Stats feedbackName="good" feedbackCount={good} />
-      <Stats feedbackName="neutral" feedbackCount={neutral} />
-      <Stats feedbackName="bad" feedbackCount={bad} />
+      <Stats name="good" counter={good} text=""/>
+      <Stats name="neutral" counter={neutral} text=""/>
+      <Stats name="bad" counter={bad} text=""/>
+      <Stats name="all" counter={total} text=""/>
+      <Stats name="average" counter={average} text=""/>
+      <Stats name="positive" counter={positive} text="%"/>
+
       
     </div>
   )
