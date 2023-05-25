@@ -25,14 +25,16 @@ const Statistics = (props) => {
   } 
   else {
     return (
-      <>
+      <table>
+        <tbody>
         <StatisticLine name="good" value={props.good} text=""/>
         <StatisticLine name="neutral" value={props.neutral} text=""/>
         <StatisticLine name="bad" value={props.bad} text=""/>
         <StatisticLine name="all" value={props.total} text=""/>
         <StatisticLine name="average" value={props.average} text=""/>
         <StatisticLine name="positive" value={props.positive} text="%"/>
-      </>
+        </tbody>
+      </table>
     )
   }
   
@@ -101,7 +103,6 @@ const App = () => {
       <Header name={"statistics"} />
       <Statistics good={good} neutral={neutral} bad={bad} average={average} all={total} positive={positive} />
 
-      
     </div>
   )
 }
