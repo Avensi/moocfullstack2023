@@ -13,17 +13,25 @@ const Stats = (props) => {
 }
 
 const Statistics = (props) => {
-  return (
-    <>
-      <Stats name="good" counter={props.good} text=""/>
-      <Stats name="neutral" counter={props.neutral} text=""/>
-      <Stats name="bad" counter={props.bad} text=""/>
-      <Stats name="all" counter={props.total} text=""/>
-      <Stats name="average" counter={props.average} text=""/>
-      <Stats name="positive" counter={props.positive} text="%"/>
-    </>
-
-  )
+  
+  if(props.all === 0) {
+    return(
+      <p>No feedback given</p>
+    )
+  } 
+  else {
+    return (
+      <>
+        <Stats name="good" counter={props.good} text=""/>
+        <Stats name="neutral" counter={props.neutral} text=""/>
+        <Stats name="bad" counter={props.bad} text=""/>
+        <Stats name="all" counter={props.total} text=""/>
+        <Stats name="average" counter={props.average} text=""/>
+        <Stats name="positive" counter={props.positive} text="%"/>
+      </>
+    )
+  }
+  
 }
 
 const Button = (props) => {
