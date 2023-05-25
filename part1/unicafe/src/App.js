@@ -6,9 +6,9 @@ const Header = (props) => {
   )
 }
 
-const Stats = (props) => {
+const StatisticLine = (props) => {
   return (
-    <p>{props.name} {props.counter} {props.text}</p>
+    <p>{props.name} {props.value} {props.text}</p>
   )
 }
 
@@ -22,12 +22,12 @@ const Statistics = (props) => {
   else {
     return (
       <>
-        <Stats name="good" counter={props.good} text=""/>
-        <Stats name="neutral" counter={props.neutral} text=""/>
-        <Stats name="bad" counter={props.bad} text=""/>
-        <Stats name="all" counter={props.total} text=""/>
-        <Stats name="average" counter={props.average} text=""/>
-        <Stats name="positive" counter={props.positive} text="%"/>
+        <StatisticLine name="good" value={props.good} text=""/>
+        <StatisticLine name="neutral" value={props.neutral} text=""/>
+        <StatisticLine name="bad" value={props.bad} text=""/>
+        <StatisticLine name="all" value={props.total} text=""/>
+        <StatisticLine name="average" value={props.average} text=""/>
+        <StatisticLine name="positive" value={props.positive} text="%"/>
       </>
     )
   }
@@ -89,6 +89,7 @@ const App = () => {
   return (
     <div>
       <Header name={"give feedback"} />
+
       <Button handleClick={addGood} text="good"/>
       <Button handleClick={addNeutral} text="neutral"/>
       <Button handleClick={addBad} text="bad"/>
