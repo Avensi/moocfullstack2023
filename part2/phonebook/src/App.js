@@ -3,15 +3,17 @@ import Persons from './components/Persons'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
+    { name: 'Arto Hellas', number : '040-1234567', }
   ]) 
   const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
 
   const addPerson = (event) => {
     event.preventDefault()
 
     const Person = {
-      name : newName
+      name : newName,
+      number : newNumber
     }
     
     if((persons.filter(person => person.name === Person.name).length != 0)) {
@@ -22,9 +24,11 @@ const App = () => {
     }
     
     setNewName("")
+    setNewNumber("")
   }
 
   const handleNewName = (event) => setNewName(event.target.value)
+  const handleNewNumber = (event) => setNewNumber(event.target.value)
 
   return (
     <div>
@@ -32,6 +36,9 @@ const App = () => {
       <form onSubmit={addPerson}>
         <div>
           name: <input value={newName} onChange={handleNewName}/>
+        </div>
+        <div>
+          number: <input value={newNumber} onChange={handleNewNumber}/>
         </div>
         <div>
           <button type="submit">add</button>
