@@ -1,8 +1,8 @@
-const Persons = ({persons}) => {
+import Person from "./Person"
+
+const Persons = ({persons, erasePerson}) => {
     return (
-        <>
-        {persons.map(person => <p key={person.id}> {person.name} {person.number}</p>)}
-        </>
+        persons.map(person => <> <Person key={person.id} person={person} erasePerson={() => erasePerson(person.id)}/>  </>)
     )
 }
 

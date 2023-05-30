@@ -39,8 +39,15 @@ const App = () => {
       })
     }
     
-    
   }
+
+  const erasePerson = (personID) => {
+    PersonService
+    .deletePerson(personID)
+    setPersons(persons.filter(person => person.id !== personID))
+  
+  }
+
 
   const personsToShow = persons.filter(person => person.name.toLocaleLowerCase().includes(newFilter.toLocaleLowerCase()))
 
@@ -55,7 +62,7 @@ const App = () => {
       <h3>Add a new</h3>
       <PersonForm addPerson={addPerson} newName={newName} newNumber={newNumber} handleNewName={handleNewName} handleNewNumber={handleNewNumber} />
       <h3>Numbers</h3>
-      <Persons persons={personsToShow} />
+      <Persons persons={personsToShow} erasePerson={erasePerson} />
     </div>
   )
 }

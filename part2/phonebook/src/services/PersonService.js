@@ -11,4 +11,9 @@ const createPerson = (person) => {
     return req.then(response => response.data)
 }
 
-export default { fetchPersons, createPerson }
+const deletePerson = (personID) => {
+    const req = axios.delete(`${baseUrl}/${personID}`)
+    return req.then(response => response.data)
+}
+
+export default { fetchPersons, createPerson, deletePerson }
