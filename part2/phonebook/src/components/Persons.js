@@ -2,8 +2,13 @@ import Person from "./Person"
 
 const Persons = ({persons, erasePerson}) => {
     return (
-        persons.map(person => <> <Person key={person.id} person={person} erasePerson={() => erasePerson(person)}/>  </>)
-    )
+        <>
+            {persons.map(person => 
+            <Person key={person.id} person={person} erasePerson={() => erasePerson(person)}
+            />)}
+        </> 
+        )
+
 }
 
 export default Persons

@@ -25,9 +25,14 @@ const App = () => {
       name : newName,
       number : newNumber,
     }
+
     
     if((persons.filter(person => person.name === Person.name).length !== 0)) {
-      alert(`${newName} is already added to phonebook`)
+      if(window.confirm(`${newName} is already added to phonebook, replace the old number with a new one ?`)){
+        const personToUpdate = persons.filter(person => person.name === Person.name)[0]
+        updatePerson(personToUpdate.id,Person)
+      }
+
 
     } else {
       PersonService
@@ -39,6 +44,14 @@ const App = () => {
       })
     }
     
+  }
+
+  const updatePerson = (personID, person) => {
+    PersonService
+      .putPerson(personID, person)
+      .then(returnedPersons => {
+        setPersons(persons.map(person => person.id !== personID ? person : returnedPersons ))
+    })
   }
 
   const erasePerson = (deletePerson) => {
