@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
-import axios from 'axios'
+import PersonService from './services/PersonService'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -10,15 +10,13 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
 
-  const fetchPersons = () => {
-    axios
-    .get("http://localhost:3001/persons")
-    .then(response => {
-      setPersons(response.data)
-    })
-  }
 
-  useEffect(fetchPersons, [])
+
+  useEffect(() => {
+    PersonService
+    .fetchPersons()
+    .then(initialPersons => setPersons(initialPersons))
+  }, [])
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -32,13 +30,16 @@ const App = () => {
       alert(`${newName} is already added to phonebook`)
 
     } else {
-      axios
-      .post('http://localhost:3001/persons', Person)
-      .then(response => {setPersons(persons.concat(response.data))})
+      PersonService
+      .createPerson(Person)
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+        setNewName("")
+        setNewNumber("")
+      })
     }
     
-    setNewName("")
-    setNewNumber("")
+    
   }
 
   const personsToShow = persons.filter(person => person.name.toLocaleLowerCase().includes(newFilter.toLocaleLowerCase()))
