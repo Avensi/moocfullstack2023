@@ -41,10 +41,13 @@ const App = () => {
     
   }
 
-  const erasePerson = (personID) => {
-    PersonService
-    .deletePerson(personID)
-    setPersons(persons.filter(person => person.id !== personID))
+  const erasePerson = (deletePerson) => {
+    if(window.confirm(`Delete ${deletePerson.name} ?`)){
+      PersonService
+      .deletePerson(deletePerson.id)
+      setPersons(persons.filter(person => person.id !== deletePerson.id))
+    }
+    
   
   }
 
