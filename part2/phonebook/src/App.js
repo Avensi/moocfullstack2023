@@ -11,9 +11,20 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
   const [successMessage, setSucessMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   const successMessageStyle = {
     color: "green",
+    background: "lightgrey",
+    fontSize: 20,
+    borderStyle: "solid",
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+  }
+
+  const errorMessageStyle = {
+    color: "red",
     background: "lightgrey",
     fontSize: 20,
     borderStyle: "solid",
@@ -65,7 +76,18 @@ const App = () => {
       .putPerson(personID, person)
       .then(returnedPersons => {
         setPersons(persons.map(person => person.id !== personID ? person : returnedPersons ))
+        setSucessMessage(`Changed '${person.name}'`)
+        setTimeout( () => {
+          setSucessMessage(null)
+        }, 5000)
+      })
+      .catch(error => { 
+        setErrorMessage(`Information on ${person.name} has already been removed from server`)
+        setTimeout( () =>{
+          setErrorMessage(null)
+        }, 5000)
     })
+      
   }
 
   const erasePerson = (deletePerson) => {
@@ -89,6 +111,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <Notification message={successMessage} style={successMessageStyle}/>
+      <Notification message={errorMessage} style={errorMessageStyle} />
       <Filter value={newFilter} onChange={handleNewFilter} />
       <h3>Add a new</h3>
       <PersonForm addPerson={addPerson} newName={newName} newNumber={newNumber} handleNewName={handleNewName} handleNewNumber={handleNewNumber} />
