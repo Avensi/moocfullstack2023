@@ -60,15 +60,20 @@ app.get('/api/persons', (request, response) => {
 app.get('/api/persons/:id', (request, response) => {
     const idReq =request.params.id
     Person.findById(idReq).then(person => {
-        response.json(person)
+        if (person) {
+            response.json(person)
+        } else {
+            response.status(404).end()
+        }
     })
    
 })
 
 app.delete('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    persons = persons.filter(person => person.id !== id)
-    response.status(204).end()
+    const idReq = request.params.id
+    Person.findByIdAndDelete(idReq).then(() => {
+        response.status(204).end()
+    })
 })
 
 app.post('/api/persons', (request, response) => {
@@ -103,9 +108,6 @@ app.post('/api/persons', (request, response) => {
 
 })
 
-const generateId = (range) => {
-    return Math.floor(Math.random() * range)
-}
 const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
