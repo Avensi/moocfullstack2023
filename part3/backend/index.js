@@ -49,7 +49,7 @@ app.get('/api/persons/:id', (request, response, next) => {
    
 })
 
-app.delete('/api/persons/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response, next) => {
     const idReq = request.params.id
     Person.findByIdAndDelete(idReq).then(() => {
         response.status(204).end()
@@ -57,26 +57,8 @@ app.delete('/api/persons/:id', (request, response) => {
     .catch(error => next(error))
 })
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
     const body = request.body
-
-    if (!body.name){
-        return response.status(400).json({
-            error : "name missing"
-        })
-    }
-
-    else if (!body.number){
-        return response.status(400).json({
-            error : "number missing"
-        })
-    }
-
-    else if (persons.filter(person => person.name === body.name).length > 0){
-        return response.status(400).json({
-            error : "name must be unique"
-        })
-    }
     
     const person = new Person({
         name : body.name,
@@ -99,7 +81,7 @@ app.put('/api/persons/:id', (request, response, next) => {
         number : body.number
     }
     
-    Person.findByIdAndUpdate(idReq, person, {new : true})
+    Person.findByIdAndUpdate(idReq, person, {new: true, runValidators: true, context: 'query'})
         .then(updatedPerson => {response.json(updatedPerson)})
         .catch(error => next(error))
 })
@@ -110,9 +92,11 @@ const unknownEndpoint = (request, response) => {
 app.use(unknownEndpoint)
 
 const errorHandler = (error, request, response, next) => {
-    console.error(error.name)
+    console.log(error.message)
     if (error.name === 'CastError') {
 		return response.status(400).send({ error: 'malformatted id' })
+    } else if (error.name === 'ValidationError'){
+        return response.status(400).send({error : error.message})
     }
 
     next(error)
