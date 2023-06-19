@@ -65,8 +65,14 @@ const App = () => {
         setSucessMessage(`Added '${Person.name}'`)
         setTimeout( () => {
           setSucessMessage(null)
-        }, 5000)
+        }, 5000) })
+        .catch(error => { 
+          setErrorMessage( `${error.response.data.error}`)
+          setTimeout( () =>{
+            setErrorMessage(null)
+          }, 5000)
       })
+     
     }
     
   }
@@ -99,7 +105,6 @@ const App = () => {
     
   
   }
-
 
   const personsToShow = persons.filter(person => person.name.toLocaleLowerCase().includes(newFilter.toLocaleLowerCase()))
 
