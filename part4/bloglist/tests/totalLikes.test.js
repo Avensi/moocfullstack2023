@@ -19,6 +19,15 @@ describe('total likes', () => {
 })
 
 describe('total likes', () => {
+  const listWithNoBlog = []
+  
+  test('when list has no blog, return 0', () => {
+    const result = listHelper.totalLikes(listWithNoBlog)
+    expect(result).toBe(0)
+  })
+})
+
+describe('total likes', () => {
   const listWithMultipleBlogs = [
     {
       _id: '5a422a851b54a676234d17f7',
