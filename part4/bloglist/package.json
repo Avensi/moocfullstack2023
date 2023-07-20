@@ -18,7 +18,8 @@
     "supertest": "^6.3.3"
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "globalTeardown": "./tests/teardown.js"
   },
   "dependencies": {
     "abbrev": "^1.1.1",
