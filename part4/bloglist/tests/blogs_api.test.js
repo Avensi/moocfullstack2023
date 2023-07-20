@@ -46,6 +46,27 @@ test('the identifier of a blog is named id', async () => {
   expect(response.body[0].id).toBeDefined()
 })
 
+test('a valid blog can be posted', async () => {
+  const newBlog = {
+    title: 'FFXIV is great',
+    author: 'Helena Li',
+    url: '',
+    likes: 1,
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const response = await api.get('/api/blogs')
+  const titles = response.body.map(r => r.title)
+
+  expect(response.body).toHaveLength(InitialBlogs.length + 1)
+  expect(titles).toContain('FFXIV is great')
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })
