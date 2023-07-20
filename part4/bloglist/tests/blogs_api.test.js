@@ -1,31 +1,17 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
-const Blog = require('../models/blog')
+const helper = require('./test_helper')
 const api = supertest(app)
-
-const InitialBlogs = [
-  {
-    title: 'Life sucks',
-    author: 'Helena Li',
-    url: '',
-    likes: 1,
-    id: '649358ad388310db81d3a158'
-  },
-  {
-    title: 'Life is good',
-    author: 'Helena Li',
-    url: '',
-    likes: 2,
-    id: '64935a310de6d2eff2d551e6'
-  },
-]
+const Blog = require('../models/blog')
 
 beforeEach( async () => {
   await Blog.deleteMany({})
-  let blogObject = new Blog(InitialBlogs[0])
+
+  let blogObject = new Blog(helper.InitialBlogs[0])
   await blogObject.save()
-  blogObject = new Blog(InitialBlogs[1])
+  
+  blogObject = new Blog(helper.InitialBlogs[1])
   await  blogObject.save()
 })
 
@@ -37,13 +23,13 @@ test('blogs are returned as json', async () => {
 })
   
 test('the number of blogs returned is correct', async () => {
-  const response = await api.get('/api/blogs')
-  expect(response.body).toHaveLength(InitialBlogs.length)
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd).toHaveLength(helper.InitialBlogs.length)
 })
 
 test('the identifier of a blog is named id', async () => {
-  const response = await api.get('/api/blogs')
-  expect(response.body[0].id).toBeDefined()
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd[0].id).toBeDefined()
 })
 
 test('a valid blog can be posted', async () => {
@@ -60,11 +46,41 @@ test('a valid blog can be posted', async () => {
     .expect(201)
     .expect('Content-Type', /application\/json/)
 
-  const response = await api.get('/api/blogs')
-  const titles = response.body.map(r => r.title)
+  const blogsAtEnd = await helper.blogsInDb()
+  const titles = blogsAtEnd.map(r => r.title)
 
-  expect(response.body).toHaveLength(InitialBlogs.length + 1)
+  expect(blogsAtEnd).toHaveLength(helper.InitialBlogs.length + 1)
   expect(titles).toContain('FFXIV is great')
+})
+
+test('if like undefined, default value is 1', async () => {
+  const newBlog = {
+    title: 'FFXIV is great',
+    author: 'Helena Li',
+    url: '',
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  const likes = blogsAtEnd.map(r => r.likes)
+  expect(likes).toContain(0)
+})
+
+test('if missing title or url, error 400', async () => {
+  const newBlog = {
+    author: 'Helena Li',
+    url: '',
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
 })
 
 afterAll(async () => {
