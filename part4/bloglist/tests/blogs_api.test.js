@@ -86,7 +86,7 @@ test('if missing title or url, error 400', async () => {
 test('delete a blog', async () => {
   const blogAtStart = await helper.blogsInDb()
   const blogToDelete = blogAtStart[0]
-  console.log(blogToDelete.id)
+
   await api
     .delete(`/api/blogs/${blogToDelete.id}`)
     .expect(204)
@@ -96,6 +96,29 @@ test('delete a blog', async () => {
 
   expect(blogAtEnd).toHaveLength(blogAtStart.length - 1)
   expect(titles).not.toContain(blogToDelete.title)
+})
+
+test('update a blog', async () => {
+  const blogAtStart = await helper.blogsInDb()
+
+  const idToUpdate = blogAtStart[0].id
+  const newBlog = {
+    id : blogAtStart[0].id,
+    title: 'FFXIV is great',
+    author: 'Helena Li',
+    url: '',
+    likes : 100,
+  }
+
+  await api
+    .put(`/api/blogs/${idToUpdate}`)
+    .send(newBlog)
+    .expect(200)
+
+  const blogAtEnd = await helper.blogsInDb()
+
+  expect(blogAtEnd).toHaveLength(blogAtStart.length )
+  expect(blogAtEnd).toContainEqual(newBlog)
 })
 
 afterAll(async () => {
