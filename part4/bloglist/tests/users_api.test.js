@@ -77,11 +77,15 @@ test('error creating when not sufficiently long username or password', async () 
 
   const response = await api
     .post('/api/users')
-    .send(newUser)
+    .send(newUser)++
     .expect(400)
     .expect('Content-Type', /application\/json/)
 
   expect(response.body.error).toContain('username and password should be at least 3 characters long')
   const userAtEnd = await helper.usersInDb()
   expect(userAtEnd).toHaveLength(userAtStart.length)
+})
+
+afterAll(async () => {
+  await mongoose.connection.close()
 })
