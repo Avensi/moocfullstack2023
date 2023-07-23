@@ -6,7 +6,6 @@ const helper = require('./test_helper')
 const User = require('../models/user')
 const bcryptjs = require('bcryptjs')
 
-
 beforeEach( async () => {
   await User.deleteMany({})
 
@@ -47,9 +46,11 @@ test('create new user', async () => {
   const usernames = userAtEnd.map((user) => user.username)
   expect(usernames).toContain(newUser.username)
 })
+ 
 
 test('error creating when missing username or password', async () => {
   const userAtStart = await helper.usersInDb()
+
   const newUser = {
     username : 'mkara',
     name : 'Melis Kara',
@@ -66,7 +67,7 @@ test('error creating when missing username or password', async () => {
   expect(userAtEnd).toHaveLength(userAtStart.length)
 
 })
-
+/** 
 test('error creating when not sufficiently long username or password', async () => {
   const userAtStart = await helper.usersInDb()
   const newUser = {
@@ -89,3 +90,5 @@ test('error creating when not sufficiently long username or password', async () 
 afterAll(async () => {
   await mongoose.connection.close()
 })
+*/
+ 

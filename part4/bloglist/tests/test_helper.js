@@ -7,14 +7,21 @@ const InitialBlogs = [
     author: 'Helena Li',
     url: '',
     likes: 1,
+    user : '64bc2e802521bc2c3fe61e50'
   },
   {
     title: 'Life is good',
     author: 'Helena Li',
     url: '',
     likes: 2,
+    user : '64bc2e802521bc2c3fe61e50'
   }
 ]
+
+const testUser = {
+  username : 'heli',
+  password : 'azerty'
+}
 
 
 const blogsInDb = async() => {
@@ -28,6 +35,6 @@ const usersInDb = async() => {
 }
 
 module.exports = {
-  InitialBlogs, blogsInDb, usersInDb
+  InitialBlogs, blogsInDb, usersInDb, testUser
 }
 
