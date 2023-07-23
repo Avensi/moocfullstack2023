@@ -6,6 +6,7 @@ const helper = require('./test_helper')
 const User = require('../models/user')
 const bcryptjs = require('bcryptjs')
 
+/*
 beforeEach( async () => {
   await User.deleteMany({})
 
@@ -16,7 +17,7 @@ beforeEach( async () => {
   passwordHash = await bcryptjs.hash('pokemon', 10)
   userObject = new User({username : 'jluo', name : 'Jodie Luo', passwordHash})
   await  userObject.save()
-})
+})*/
 
 test('users are returned as json', async () => {
   await api
@@ -67,7 +68,7 @@ test('error creating when missing username or password', async () => {
   expect(userAtEnd).toHaveLength(userAtStart.length)
 
 })
-/** 
+
 test('error creating when not sufficiently long username or password', async () => {
   const userAtStart = await helper.usersInDb()
   const newUser = {
@@ -78,7 +79,7 @@ test('error creating when not sufficiently long username or password', async () 
 
   const response = await api
     .post('/api/users')
-    .send(newUser)++
+    .send(newUser)
     .expect(400)
     .expect('Content-Type', /application\/json/)
 
@@ -90,5 +91,5 @@ test('error creating when not sufficiently long username or password', async () 
 afterAll(async () => {
   await mongoose.connection.close()
 })
-*/
+
  

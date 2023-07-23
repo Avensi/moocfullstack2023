@@ -54,6 +54,21 @@ test('a valid blog can be posted', async () => {
   expect(titles).toContain('FFXIV is great')
 })
 
+test('cant post without a token', async () => {
+
+  const newBlog = {
+    title: 'FFXIV is great',
+    author: 'Helena Li',
+    url: '',
+    likes: 1,
+  }
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(401)
+    .expect('Content-Type', /application\/json/)
+
+})
 
 test('if like undefined, default value is 1', async () => {
   const login = await api.post('/api/login').send(helper.testUser)

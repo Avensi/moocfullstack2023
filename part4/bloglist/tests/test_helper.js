@@ -7,14 +7,14 @@ const InitialBlogs = [
     author: 'Helena Li',
     url: '',
     likes: 1,
-    user : '64bc2e802521bc2c3fe61e50'
+    user : '64bda11e6307851cd52b30cc'
   },
   {
     title: 'Life is good',
     author: 'Helena Li',
     url: '',
     likes: 2,
-    user : '64bc2e802521bc2c3fe61e50'
+    user : '64bda11e6307851cd52b30cc'
   }
 ]
 
