@@ -4,6 +4,7 @@ import blogService from './services/blogs'
 import Login from './components/Login'
 import loginService from './services/login'
 import Notification from './components/Notification'
+import BlogForm from './components/BlogForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -11,6 +12,9 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
 
   const successMessageStyle = {
     color: "green",
@@ -63,6 +67,7 @@ const App = () => {
       username, password,
     })
     setUser(user)
+    blogService.setToken(user.token)
     window.localStorage.setItem('loggedBlogUser', JSON.stringify(user))
     setUsername('')
     setPassword('')
@@ -76,7 +81,39 @@ const App = () => {
 
   const handleLogout = (event) => {
     setUser(null)
+    blogService.setToken(null)
     window.localStorage.removeItem('loggedBlogUser')
+  }
+
+  const handleTitle = (event) => {
+    event.preventDefault()
+    setTitle(event.target.value)
+  }
+
+  const handleAuthor = (event) => {
+    event.preventDefault()
+    setAuthor(event.target.value)
+  }
+
+  const handleUrl = (event) => {
+    event.preventDefault()
+    setUrl(event.target.value)
+  }
+
+  const addBlog = async (event) => {
+    event.preventDefault()
+    try {
+      const response = await blogService.create({title, author, url})
+      setTitle('')
+      setAuthor('')
+      setUrl('')
+      setBlogs(blogs.concat(response))
+    } catch (exception) {
+      setErrorMessage('Wrong credentials')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
   }
 
   if (user === null){
@@ -89,10 +126,10 @@ const App = () => {
   }
   return (
     <div>
-  
       <h2>blogs</h2>
       <p>{user.name} logged in </p>
       <button type="submit" onClick={handleLogout}>logout</button>
+      <BlogForm addBlog={addBlog} title={title} author={author} url={url} handleTitle={handleTitle} handleAuthor={handleAuthor} handleUrl={handleUrl} />
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
