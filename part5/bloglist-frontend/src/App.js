@@ -12,6 +12,7 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [successMessage, setSuccessMessage] = useState(null)
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -71,8 +72,12 @@ const App = () => {
     window.localStorage.setItem('loggedBlogUser', JSON.stringify(user))
     setUsername('')
     setPassword('')
+    setSuccessMessage(`${user.name} successfully logged in!`)
+      setTimeout(() => {
+        setSuccessMessage(null)
+      }, 5000)
   } catch (exception) {
-    setErrorMessage('Wrong credentials')
+    setErrorMessage('Wrong username or password')
     setTimeout(() => {
       setErrorMessage(null)
     }, 5000)
@@ -108,8 +113,12 @@ const App = () => {
       setAuthor('')
       setUrl('')
       setBlogs(blogs.concat(response))
+      setSuccessMessage(`a new blog ${title} by ${author} added`)
+      setTimeout(() => {
+        setSuccessMessage(null)
+      }, 5000)
     } catch (exception) {
-      setErrorMessage('Wrong credentials')
+      setErrorMessage('Unauthorized user')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
@@ -119,14 +128,17 @@ const App = () => {
   if (user === null){
     return (
       <div>
-      <Login username={username} password={password} handleUsername={handleUsername} handlePassword={handlePassword} handleLogin={handleLogin}/>
       <Notification message={errorMessage} style={errorMessageStyle} />
+      <Login username={username} password={password} handleUsername={handleUsername} handlePassword={handlePassword} handleLogin={handleLogin}/>
+      
     </div>
     )
   }
   return (
     <div>
       <h2>blogs</h2>
+      <Notification message={errorMessage} style={errorMessageStyle} />
+      <Notification message={successMessage} style={successMessageStyle} />
       <p>{user.name} logged in </p>
       <button type="submit" onClick={handleLogout}>logout</button>
       <BlogForm addBlog={addBlog} title={title} author={author} url={url} handleTitle={handleTitle} handleAuthor={handleAuthor} handleUrl={handleUrl} />
