@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import Login from './components/Login'
@@ -12,7 +12,7 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [successMessage, setSuccessMessage] = useState(null)
-
+  const blogFormRef = useRef()
 
   const successMessageStyle = {
     color: "green",
@@ -50,7 +50,6 @@ const App = () => {
 
   const handleLogin = async(loginObject) => {
   try {
-    console.log(loginObject)
     const user = await loginService.login(loginObject)
     setUser(user)
     blogService.setToken(user.token)
@@ -83,6 +82,7 @@ const App = () => {
       setTimeout(() => {
         setSuccessMessage(null)
       }, 5000)
+      blogFormRef.current.toggleVisibility()
     } catch (exception) {
       setErrorMessage('Unauthorized user')
       setTimeout(() => {
@@ -108,11 +108,12 @@ const App = () => {
       <Notification message={successMessage} style={successMessageStyle} />
       <p>{user.name} logged in </p>
       <button type="submit" onClick={handleLogout}>logout</button>
-      <Toggable buttonLabel="new blog">
+      <Toggable buttonLabel="new blog" ref={blogFormRef}>
         <BlogForm addBlog={addBlog} />
       </Toggable>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} user={user}/>
+        
       )}
     </div>
   )
