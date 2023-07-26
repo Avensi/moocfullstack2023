@@ -91,7 +91,17 @@ const App = () => {
     }
   }
 
-  
+  const addLike = async(blogObjectId, blogObject) => {
+    try {
+      const response = await blogService.put(blogObjectId, blogObject)
+      setBlogs(blogs.map(blog => blog.id !== blogObjectId ? blog :response))
+    } catch (exception) {
+      setErrorMessage('Unauthorized user')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
 
   if (user === null){
     return (
@@ -112,7 +122,7 @@ const App = () => {
         <BlogForm addBlog={addBlog} />
       </Toggable>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} user={user}/>
+        <Blog key={blog.id} blog={blog} user={user} addLike={addLike}/>
         
       )}
     </div>

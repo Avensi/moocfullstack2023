@@ -48,15 +48,21 @@ blogRouter.delete('/:id', async(request, response) => {
     response.status(401).json({error : 'unauthorized access'})
   }
   
-  
 })
 
 blogRouter.put('/:id', async(request, response) => {
+
+  const user = request.user
+  if (!user) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
+  
   const blog = {
     title: request.body.title,
     author: request.body.author,
     url: request.body.url,
     likes: request.body.likes,
+    user : user.id
   }
 
   const result = await Blog.findByIdAndUpdate(request.params.id, blog, {new: true, context: 'query'})
