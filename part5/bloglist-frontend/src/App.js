@@ -9,14 +9,10 @@ import Toggable from './components/Toggable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('') 
-  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [successMessage, setSuccessMessage] = useState(null)
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+
 
   const successMessageStyle = {
     color: "green",
@@ -52,27 +48,14 @@ const App = () => {
     }
   }, [])
 
-  const handleUsername = (event) => {
-    event.preventDefault()
-    setUsername(event.target.value)
-
-  }
-  const handlePassword = (event) => {
-    event.preventDefault()
-    setPassword(event.target.value)
-  }
-
-  const handleLogin = async(event) => {
-  event.preventDefault()
+  const handleLogin = async(loginObject) => {
   try {
-    const user = await loginService.login({
-      username, password,
-    })
+    console.log(loginObject)
+    const user = await loginService.login(loginObject)
     setUser(user)
     blogService.setToken(user.token)
     window.localStorage.setItem('loggedBlogUser', JSON.stringify(user))
-    setUsername('')
-    setPassword('')
+    
     setSuccessMessage(`${user.name} successfully logged in!`)
       setTimeout(() => {
         setSuccessMessage(null)
@@ -91,30 +74,12 @@ const App = () => {
     window.localStorage.removeItem('loggedBlogUser')
   }
 
-  const handleTitle = (event) => {
-    event.preventDefault()
-    setTitle(event.target.value)
-  }
-
-  const handleAuthor = (event) => {
-    event.preventDefault()
-    setAuthor(event.target.value)
-  }
-
-  const handleUrl = (event) => {
-    event.preventDefault()
-    setUrl(event.target.value)
-  }
-
-  const addBlog = async (event) => {
-    event.preventDefault()
+  
+  const addBlog = async (blogObject) => {
     try {
-      const response = await blogService.create({title, author, url})
-      setTitle('')
-      setAuthor('')
-      setUrl('')
+      const response = await blogService.create(blogObject)
       setBlogs(blogs.concat(response))
-      setSuccessMessage(`a new blog ${title} by ${author} added`)
+      setSuccessMessage(`a new blog ${blogObject.title} by ${blogObject.author} added`)
       setTimeout(() => {
         setSuccessMessage(null)
       }, 5000)
@@ -126,11 +91,13 @@ const App = () => {
     }
   }
 
+  
+
   if (user === null){
     return (
       <div> 
       <Notification message={errorMessage} style={errorMessageStyle} />
-      <Login username={username} password={password} handleUsername={handleUsername} handlePassword={handlePassword} handleLogin={handleLogin}/>
+      <Login handleLogin={handleLogin}/>
     </div>
     )
   }
@@ -142,7 +109,7 @@ const App = () => {
       <p>{user.name} logged in </p>
       <button type="submit" onClick={handleLogout}>logout</button>
       <Toggable buttonLabel="new blog">
-        <BlogForm addBlog={addBlog} title={title} author={author} url={url} handleTitle={handleTitle} handleAuthor={handleAuthor} handleUrl={handleUrl} />
+        <BlogForm addBlog={addBlog} />
       </Toggable>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
