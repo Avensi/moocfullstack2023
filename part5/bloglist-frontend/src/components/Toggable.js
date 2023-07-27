@@ -11,23 +11,24 @@ const Toggable = forwardRef((props, refs) => {
 
     useImperativeHandle(refs, () => {
         return {
-          toggleVisibility
+            toggleVisibility
         }
     })
 
     return (
         <>
-         <div>
-            <div style={hideWhenVisible}>
-                <button onClick={toggleVisibility}>{props.buttonLabel}</button>
+            <div>
+                <div style={hideWhenVisible}>
+                    <button onClick={toggleVisibility}>{props.buttonLabel}</button>
+                </div>
+                <div style={showWhenVisible}>
+                    {props.children}
+                    <button onClick={toggleVisibility}>cancel</button>
+                </div>
             </div>
-            <div style={showWhenVisible}>
-                {props.children}
-            <button onClick={toggleVisibility}>cancel</button>
-        </div>
-    </div>
         </>
     )
 })
+Toggable.displayName = "Toggable"
 
 export default Toggable
