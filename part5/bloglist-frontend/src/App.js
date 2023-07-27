@@ -51,6 +51,7 @@ const App = () => {
   const handleLogin = async(loginObject) => {
   try {
     const user = await loginService.login(loginObject)
+    console.log(user)
     setUser(user)
     blogService.setToken(user.token)
     window.localStorage.setItem('loggedBlogUser', JSON.stringify(user))
@@ -103,6 +104,18 @@ const App = () => {
     }
   }
 
+  const deleteBlog = async(blogObjectId) => {
+    try {
+      await blogService.remove(blogObjectId)
+      setBlogs(blogs.filter(blog => blog.id !== blogObjectId))
+    } catch (exception) {
+      setErrorMessage('token invalid or unauthorized access')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
 
   if (user === null){
     return (
@@ -123,7 +136,7 @@ const App = () => {
         <BlogForm addBlog={addBlog} />
       </Toggable>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} user={user} addLike={addLike}/>
+        <Blog key={blog.id} blog={blog} user={user} addLike={addLike} deleteBlog={deleteBlog}/>
       )}
     </div>
   )

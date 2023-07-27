@@ -26,10 +26,20 @@ const put = async (updateObjectId, updateObject) => {
 
 }
 
+const remove = async(objectId) => {
+
+  const config = {
+    headers: { Authorization: token },
+  }
+  const response = await axios.delete(`${baseUrl}/${objectId}`, config)
+  return response.data
+
+}
+
 const getAll = () => {
   const request = axios.get(baseUrl)
   return request.then(response => response.data)
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, create, setToken, put }
+export default { getAll, create, setToken, put, remove }

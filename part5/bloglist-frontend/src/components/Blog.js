@@ -1,12 +1,17 @@
 import { useState } from 'react'
 
-const Blog = ({blog, user, addLike}) => {
+const Blog = ({blog, user, addLike, deleteBlog}) => {
 
   const [showBlog, setShowBlog] = useState(false)
 
   const toggleBlogVisiblity = () => {
     setShowBlog(!showBlog)
   }
+
+  const showDelete = blog.user.id === user.id ? true : false
+
+  console.log(user)
+
 
   const blogStyle = {
     paddingTop: 10,
@@ -28,6 +33,15 @@ const Blog = ({blog, user, addLike}) => {
     addLike(blog.id, blogObject)
   }
 
+  const removeBlog = (event) => {
+    event.preventDefault()
+    if (window.confirm(`remove blog ${blog.tite} by ${blog.author}`)){
+      deleteBlog(blog.id)
+    }
+   
+
+  }
+
   if (showBlog) {
     return (
       <div style={blogStyle}>
@@ -35,7 +49,8 @@ const Blog = ({blog, user, addLike}) => {
          <button onClick={toggleBlogVisiblity}>hide</button><br></br> 
         {blog.url}<br></br> 
         likes : {blog.likes} <button onClick={putLike}>like</button><br></br> 
-        {user.name}
+        {blog.user.name} <br></br>
+        {showDelete && <button onClick={removeBlog}>remove</button>}
       </div>  
     )
   } 
