@@ -36,8 +36,8 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
+      setBlogs(blogs.sort((a,b) => (b.likes - a.likes)))
+      )
   }, [])
 
   useEffect(() => {
@@ -94,14 +94,15 @@ const App = () => {
   const addLike = async(blogObjectId, blogObject) => {
     try {
       const response = await blogService.put(blogObjectId, blogObject)
-      setBlogs(blogs.map(blog => blog.id !== blogObjectId ? blog :response))
+      setBlogs(blogs.map(blog => blog.id !== blogObjectId ? blog :response).sort((a,b) => (b.likes - a.likes)))
     } catch (exception) {
-      setErrorMessage('Unauthorized user')
+      setErrorMessage('token invalid')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
     }
   }
+
 
   if (user === null){
     return (
@@ -123,7 +124,6 @@ const App = () => {
       </Toggable>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} user={user} addLike={addLike}/>
-        
       )}
     </div>
   )
