@@ -66,7 +66,7 @@ const App = () => {
         }
     }
 
-    const handleLogout = (event) => {
+    const handleLogout = () => {
         setUser(null)
         blogService.setToken(null)
         window.localStorage.removeItem("loggedBlogUser")
@@ -93,6 +93,8 @@ const App = () => {
         try {
             const response = await blogService.put(blogObjectId, blogObject)
             setBlogs(blogs.map(blog => blog.id !== blogObjectId ? blog :response).sort((a,b) => (b.likes - a.likes)))
+            console.log(blogs)
+            console.log(response)
         } catch (exception) {
             setErrorMessage("token invalid")
             setTimeout(() => {
@@ -113,10 +115,9 @@ const App = () => {
         }
     }
 
-
     if (user === null){
         return (
-            <div> 
+            <div>
                 <Notification message={errorMessage} style={errorMessageStyle} />
                 <Login handleLogin={handleLogin}/>
             </div>

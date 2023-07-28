@@ -1,7 +1,7 @@
 import { useState } from "react"
 import PropTypes from "prop-types"
 
-const Login = ({handleLogin}) => {
+const Login = ({ handleLogin }) => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
 
@@ -17,7 +17,7 @@ const Login = ({handleLogin}) => {
 
     const createLogin = (event) => {
         event.preventDefault()
-        handleLogin({username, password})
+        handleLogin({ username, password })
         setUsername("")
         setPassword("")
     }
