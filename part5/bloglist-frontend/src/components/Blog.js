@@ -39,7 +39,7 @@ const Blog = ({ blog, user, addLike, deleteBlog }) => {
 
     if (showBlog) {
         return (
-            <div style={blogStyle}>
+            <div style={blogStyle} className="blog-visible">
                 {blog.title} {blog.author}
                 <button onClick={toggleBlogVisiblity}>hide</button><br></br>
                 {blog.url}<br></br>
@@ -51,7 +51,7 @@ const Blog = ({ blog, user, addLike, deleteBlog }) => {
     }
     else {
         return (
-            <div style={blogStyle}>
+            <div style={blogStyle}  className="blog-not-visible">
                 {blog.title} {blog.author}
                 <button onClick={toggleBlogVisiblity}>view</button>
             </div>
