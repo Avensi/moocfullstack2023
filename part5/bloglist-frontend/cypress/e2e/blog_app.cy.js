@@ -7,6 +7,12 @@ describe("Blog app", function() {
             password: "password"
         }
         cy.request("POST", "http://localhost:3003/api/users/", user)
+        const user2 = {
+            name: "Melis Kara",
+            username: "mkara",
+            password: "password"
+        }
+        cy.request("POST", "http://localhost:3003/api/users/", user2)
         cy.visit("http://localhost:3000")
     })
     it("Login form is shown", function() {
@@ -46,10 +52,38 @@ describe("Blog app", function() {
             cy.contains("Dawntrail CBU3")
         })
         it("A blog can be liked", function() {
-
+            cy.contains("new blog").click()
+            cy.get("#title-input").type("Dawntrail")
+            cy.get("#author-input").type("CBU3")
+            cy.get("#url-input").type("https://fr.finalfantasyxiv.com/dawntrail/")
+            cy.get("#create-blog-button").click()
             cy.get("#view-button").click()
             cy.get("#like-button").click()
             cy.contains(1)
+        })
+        it("A blog can be deleted", function() {
+            cy.contains("new blog").click()
+            cy.get("#title-input").type("Dawntrail")
+            cy.get("#author-input").type("CBU3")
+            cy.get("#url-input").type("https://fr.finalfantasyxiv.com/dawntrail/")
+            cy.get("#create-blog-button").click()
+            cy.get("#view-button").click()
+            cy.get("#remove-button").click()
+            cy.contains("Dawntrailer").should("not.exist")
+        })
+        it("A blog cannot be deleted by another user", function() {
+            cy.contains("new blog").click()
+            cy.get("#title-input").type("Dawntrail")
+            cy.get("#author-input").type("CBU3")
+            cy.get("#url-input").type("https://fr.finalfantasyxiv.com/dawntrail/")
+            cy.get("#create-blog-button").click()
+            cy.contains("logout").click()
+            cy.get("#username").type("mkara")
+            cy.get("#password").type("password")
+            cy.get("#login-button").click()
+            cy.contains("Melis Kara logged in")
+            cy.get("#view-button").click()
+            cy.contains("remove").should("not.exist")
         })
     })
 })
