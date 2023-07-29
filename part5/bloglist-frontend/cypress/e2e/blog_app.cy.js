@@ -45,5 +45,11 @@ describe("Blog app", function() {
             cy.contains("a new blog Dawntrail by CBU3 added")
             cy.contains("Dawntrail CBU3")
         })
+        it("A blog can be liked", function() {
+
+            cy.get("#view-button").click()
+            cy.get("#like-button").click()
+            cy.contains(1)
+        })
     })
 })
