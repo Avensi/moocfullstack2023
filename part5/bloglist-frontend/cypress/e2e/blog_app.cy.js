@@ -29,4 +29,21 @@ describe("Blog app", function() {
 
         })
     })
+    describe("When logged in", function() {
+        beforeEach(function() {
+            cy.get("#username").type("heli")
+            cy.get("#password").type("password")
+            cy.get("#login-button").click()
+            cy.contains("Helena Li logged in")
+        })
+        it("A blog can be created", function() {
+            cy.contains("new blog").click()
+            cy.get("#title-input").type("Dawntrail")
+            cy.get("#author-input").type("CBU3")
+            cy.get("#url-input").type("https://fr.finalfantasyxiv.com/dawntrail/")
+            cy.get("#create-blog-button").click()
+            cy.contains("a new blog Dawntrail by CBU3 added")
+            cy.contains("Dawntrail CBU3")
+        })
+    })
 })
