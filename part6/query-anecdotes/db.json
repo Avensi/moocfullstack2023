@@ -29,6 +29,23 @@
       "content": "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.",
       "id": "98312",
       "votes": 0
+    },
+    {
+      "updatedAnecdote ": "> {\n  return axios__WEBPACK_IMPORTED_MODULE_0__[\"default\"].put(`${baseUrl}/${updatedAnecdote.id}`, updateAnecdote).then(res => res.data);\n}",
+      "id": "D7Wr5yN"
+    },
+    {
+      "updatedAnecdote ": "> axios__WEBPACK_IMPORTED_MODULE_0__[\"default\"].put(`${baseUrl}/${updatedAnecdote.id}`, updateAnecdote).then(res => res.data)",
+      "id": "8kPZqSE"
+    },
+    {
+      "updatedAnecdote ": "> axios__WEBPACK_IMPORTED_MODULE_0__[\"default\"].put(`${baseUrl}/${updatedAnecdote.id}`, updateAnecdote).then(res => res.data)",
+      "id": "HUI2MjR"
+    },
+    {
+      "content": "ezsfzef",
+      "votes": 5,
+      "id": "V5wMU9k"
     }
   ]
 }
